@@ -1,9 +1,9 @@
 import os, json
 
-def getRelativePath(*args):
+def rel_path(*args):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *args)
 
-def decodeNetStr(data):
+def decode_net_str(data):
     weights_data,conns_data = data.split(",")
     weights_data = weights_data.rstrip(os.linesep)
     conns_data = conns_data.lstrip(os.linesep)
@@ -32,8 +32,8 @@ def decodeNetStr(data):
 
 
 NETS_DIR = "nets"
-def openNetFile(net_file):
-    path = getRelativePath(NETS_DIR, net_file)
+def open_net_file(net_file):
+    path = rel_path(NETS_DIR, net_file)
     assert os.path.isfile(path)
 
     with open(path) as f:
@@ -41,4 +41,4 @@ def openNetFile(net_file):
         # separate chunks
         data = f.read().rstrip(os.linesep)
 
-    return decodeNetStr(data)
+    return decode_net_str(data)

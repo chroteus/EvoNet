@@ -21,29 +21,26 @@ class Evo:
         self.input_no = input_no
         self.output_no = output_no
         self.mix_conns = mix_conns
-        if not empty: self.fillWithNets()
+        if not empty: self.fill_with_nets()
 
-    #fitnessFunc MUST call Evo.getFitnessResults() to continue to next net
-    def setFitnessFunc(self, func):
-        def fitnessFunc():
-            func()
+    #fitnessFunc MUST call Evo.get_results(fitness) to continue to next net
+    def set_fitness_func(self, func):
+        self.fitness_func = func
 
-        self.fitnessFunc = fitnessFunc
-
-    # get fitness of current net decided by the fitnessFunc
+    # get fitness of current net decided by the fitness_func
     # and continues to next net
-    def getResults(self, fitness):
+    def get_results(self, fitness):
         self.nets[self.curr_net_i].fitness = fitness
 
         self.best_record = max(fitness, self.best_record)
         self.gen_record = max(fitness, self.gen_record)
-        self.nextNet()
+        self.next_net()
 
-    def nextNet(self):
-        assert self.fitnessFunc, "Define a fitnessFunc before calling nextNet!"
+    def next_net(self):
+        assert self.fitness_func, "Define a fitness_func before calling next_net!"
         self.curr_net_i += 1
 
-    def nextGen(self):
+    def next_gen(self):
         self.curr_net_i = 0
         self.current_gen += 1
         self.gen_record = 0
@@ -58,9 +55,9 @@ class Evo:
             new_net = self.nets[ni1].reproduceWith(self.nets[ni2], mix_conns=self.mix_conns)
             new_nets.append(new_net)
 
-        self.fillWithNets()
+        self.fill_with_nets()
 
-    def fillWithNets(self):
+    def fill_with_nets(self):
         while len(self.nets) < self.net_no:
             neuron_number = self.input_no+self.output_no
             weights,conns = generator.network(min_neuron_number=neuron_number)

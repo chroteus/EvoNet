@@ -1,4 +1,4 @@
-import random,math,helpers
+import random
 
 class Synapse:
     def __init__(self, neuron, weight):
@@ -9,7 +9,7 @@ class Synapse:
         self.weight = weight
         self.neuron = neuron #from which neuron to get value
 
-    def getOutput(self):
+    def get_output(self):
         return self.neuron.value*self.weight
 
     def __str__(self):

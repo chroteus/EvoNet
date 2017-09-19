@@ -2,16 +2,17 @@ from Neuron import Neuron
 """
     Network class.
     Arguments:
-    neurons: Tuple of weights of neurons. main_tuple( neuron_tuple1( weight_tuple1(1.343..,...) ))
+    neurons: List of weights of neurons. neurons[ neuron1[ weight1[1.343..,0.12..] ]]
     connections:
     neurons are connected according to their index.
     ex:[[1,3,4], ...]
     So, in this case, 0th neuron gets input from 4th, 3rd
-    and 1st neurons (in addition to actual input to nnet as it is
-    the first neuron)
-
-    Another note: Last neurons in list are considered output neurons
+    and 1st neurons.
+    Last neurons in list are considered output neurons
     and vice versa for input.
+
+    See docs for more info.
+    Another note:
 """
 from os import linesep
 import random,itertools
@@ -35,13 +36,13 @@ class Network:
                 input_neuron = self.neurons[int(inputn_i)]
                 self.neurons[ni].addSynapse(weight=weight, neuron=input_neuron)
 
-    def setInput(self, input_data):
+    def set_input(self, input_data):
         for i,data in enumerate(input_data):
             self.neurons[i].value = input_data[i]
 
-    def getOutput(self, custom_output_no=None):
+    def get_output(self, custom_output_no=None):
         for neuron in self.neurons:
-            neuron.updateValue()
+            neuron.update_value()
 
         result = []
         out_no = self.output_no if not custom_output_no else custom_output_no
@@ -49,7 +50,7 @@ class Network:
             result.append(out_neuron.value)
         return result
 
-    def reproduceWith(self, mate, mix_conns=True):
+    def reproduce_with(self, mate, mix_conns=True):
         big = self if len(self.neurons) > len(mate.neurons) else mate
         small = mate if self is big else self
 
@@ -82,13 +83,13 @@ class Network:
 
         return Network(weights=new_weights,connections=new_connections, input_no=big.input_no,output_no=big.output_no)
 
-    def getWeightStr(self):
+    def get_weight_str(self):
         neurons = [str(x) for x in self.neurons]
         s = "".join(neurons)
 
         return s
 
-    def getConnStr(self):
+    def get_conn_str(self):
         s = ""
         # connection information
         for conn in self.connection_data:
@@ -98,9 +99,9 @@ class Network:
 
     def __str__(self):
         s = ["",
-             self.getWeightStr(),
+             self.get_weight_str(),
              "," + linesep,
-             self.getConnStr()]
+             self.get_conn_str()]
 
         s = "".join(s) #more efficent this way
         return s.rstrip(linesep)
