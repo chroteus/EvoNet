@@ -1,3 +1,7 @@
+net_dir = "nets"
+
+##################
+### Activators ###
 import math
 curr_activator = "tanh"
 def activator(val):

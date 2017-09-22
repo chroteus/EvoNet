@@ -14,12 +14,14 @@ from Neuron import Neuron
     See docs for more info.
     Another note:
 """
-from os import linesep
-import random,itertools
+import os, random, itertools, helpers, evo_globals
 
 class Network:
-    def __init__(self, weights, connections, input_no=1,output_no=1):
+    def __init__(self, weights, connections=None, input_no=1,output_no=1):
         self.neurons = []
+        if type(weights) is str: # gave a path or network in string form
+            weights,connections = self.load(weights)
+
         self.connection_data = connections #store for serialization purposes
         self.weights_data = weights #for reproduction
         self.input_no = input_no
@@ -94,14 +96,53 @@ class Network:
         # connection information
         for conn in self.connection_data:
             conn = [str(s) for s in conn] #convert all integers to strings
-            s += ".".join(conn) + linesep #condense them into a single string
+            s += ".".join(conn) + os.linesep #condense them into a single string
         return s
+
+    # alphanumeric chars are 48-122 in unicode table as decimal representation
+    def generate_name(self):
+        max_char = 122
+        min_char = 48
+        name_len = 4
+        diff = max_char - min_char
+        n = name_len if len(self.weights_data) >= name_len else len(self.weights_data)
+        name = ""
+        for i in range(n):
+            w = self.weights_data[i][0]
+            w = evo_globals.activators["sigmoid"](w) #squish w
+            dec = round(min_char + (diff*w))
+            name += chr(dec)
+        while len(name) < name_len: name += name[-1]
+        w = self.weights_data[0][0]
+        w = str(round(w*1000))
+        name += " " + w
+
+        return name
+
+    def save(self, path=None):
+        path = path if path else helpers.rel_path(evo_globals.net_dir, self.generate_name())
+        if os.path.exists(path): path += " - 1" # first copy
+        while os.path.exists(path): # if path still exists somehow, go to next index
+            index = int(path[-1])
+            path[-1] = str(index+1)
+
+        #now that we are sure our path is unique
+        with open(path, "w") as f:
+            f.write(str(self))
+
+    def load(self, path):
+        try:
+            with open(path) as f:
+                return helpers.decode_net_str(f.read().rstrip(os.linesep))
+
+        except FileNotFoundError:
+            print("Network at (" + str(path) + "not found!")
 
     def __str__(self):
         s = ["",
              self.get_weight_str(),
-             "," + linesep,
+             "," + os.linesep,
              self.get_conn_str()]
 
         s = "".join(s) #more efficent this way
-        return s.rstrip(linesep)
+        return s.rstrip(os.linesep)
