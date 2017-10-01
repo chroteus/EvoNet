@@ -12,7 +12,6 @@ from Neuron import Neuron
     and vice versa for input.
 
     See docs for more info.
-    Another note:
 """
 import os, random, itertools, helpers, evo_globals
 
@@ -36,7 +35,7 @@ class Network:
             for ci, inputn_i in enumerate(conns): #index of neuron to connect
                 weight = weights[ni][ci]
                 input_neuron = self.neurons[int(inputn_i)]
-                self.neurons[ni].addSynapse(weight=weight, neuron=input_neuron)
+                self.neurons[ni].add_synapse(weight=weight, neuron=input_neuron)
 
     def set_input(self, input_data):
         for i,data in enumerate(input_data):

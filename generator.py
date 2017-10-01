@@ -1,7 +1,6 @@
 import random
 def network(min_neuron_number=20):
-
-    neuron_number = min_neuron_number + random.randint(0,80)
+    neuron_number = min_neuron_number + random.randint(0,100)
 
     connections = []
     weights = []
