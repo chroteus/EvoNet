@@ -23,7 +23,7 @@ class Evo:
         self.mix_conns = mix_conns
         if not empty: self.fill_with_nets()
 
-    #fitnessFunc MUST return a fitness
+    #fitnessFunc MUST return a fitness value
     def set_fitness_func(self, func):
         self.fitness_func = func
 

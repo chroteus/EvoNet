@@ -101,8 +101,8 @@ class Network:
     # alphanumeric chars are 48-122 in unicode table as decimal representation
     def generate_name(self):
         max_char = 122
-        min_char = 48
-        name_len = 4
+        min_char = 64
+        name_len = 10
         diff = max_char - min_char
         n = name_len if len(self.weights_data) >= name_len else len(self.weights_data)
         name = ""
@@ -112,9 +112,6 @@ class Network:
             dec = round(min_char + (diff*w))
             name += chr(dec)
         while len(name) < name_len: name += name[-1]
-        w = self.weights_data[0][0]
-        w = str(round(w*1000))
-        name += " " + w
 
         return name
 
@@ -122,20 +119,22 @@ class Network:
         path = path if path else helpers.rel_path(evo_globals.net_dir, self.generate_name())
         if os.path.exists(path): path += " - 1" # first copy
         while os.path.exists(path): # if path still exists somehow, go to next index
-            index = int(path[-1])
-            path[-1] = str(index+1)
+            split_path = path.split("-")
+            index = int(split_path[1])
+            path = split_path[0] + " - " + str(index+1)
 
         #now that we are sure our path is unique
-        with open(path, "w") as f:
+        with open(path, "w+") as f:
             f.write(str(self))
 
-    def load(self, path):
+    def load(self, path_or_net):
         try:
-            with open(path) as f:
+            with open(path_or_net) as f:
                 return helpers.decode_net_str(f.read().rstrip(os.linesep))
 
         except FileNotFoundError:
-            print("Network at (" + str(path) + "not found!")
+            # no file, try decoding directly
+            return helpers.decode_net_str(path_or_net)
 
     def __str__(self):
         s = ["",

@@ -54,13 +54,15 @@ Genetic algorithms are a much, **MUCH** slower method of training neural nets co
 
 # What EvoNet has been used for so far
 ### Successful uses:
-* Pong
+* **Pong**
+
 Needed around 10 generations to learn, it could consistently beat me, 10 to 1.
 The movement of the paddle was also quite natural.
 
-* Predicting Euro's rise/fall *(still in testing)*
+* **Predicting Euro's rise/fall (still in testing)**
+
 As this is a much harder problem and the fact that market is unpredictable, I evolve 12000 nets per hour on the USD/EUR exchange data. So far, there have been 4 million nets created. Top nets (~20 nets) predict change of Euro correctly %70 of the time. However it has yet to be seen whether the predictions are consistent and whether nets can predict big changes.
 
 ### Unsuccessful uses:
-* 2048
+* **Game of 2048**
 No matter the training, no net has ever broken the record of 256.

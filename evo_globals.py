@@ -1,5 +1,16 @@
 net_dir = "nets"
 
+import helpers, os
+if not os.path.exists(helpers.rel_path(net_dir)):
+    try:
+        os.mkdir(helpers.rel_path(net_dir))
+    except OSError:
+        pass
+
+# max "hidden" neurons to add
+# at 0, only input+output neurons will be generated
+max_neurons = 120
+
 ##################
 ### Activators ###
 import math

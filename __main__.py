@@ -22,6 +22,7 @@ def main():
     for i in range(10):
         evo.evolve_for(1)
         top_net = evo.nets[0]
+        top_net.save()
         top_net.set_input([1,0])
         out = top_net.get_output()[0]
         print("GEN " + str(i) + ": Expected 1, got " + str(out))
