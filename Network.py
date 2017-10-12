@@ -37,10 +37,17 @@ class Network:
                 input_neuron = self.neurons[int(inputn_i)]
                 self.neurons[ni].add_synapse(weight=weight, neuron=input_neuron)
 
+    """
+        Set first #len(input_data)# neurons' values to the values
+        in array.
+    """
     def set_input(self, input_data):
         for i,data in enumerate(input_data):
             self.neurons[i].value = input_data[i]
 
+    """
+        Get value of last #output_no# neurons as a list.
+    """
     def get_output(self, custom_output_no=None):
         for neuron in self.neurons:
             neuron.update_value()
@@ -51,7 +58,13 @@ class Network:
             result.append(out_neuron.value)
         return result
 
-    def reproduce_with(self, mate, mix_conns=True):
+    """
+        Combine weights and if specified, connections of neurons of two nets.
+        Gives preference to larger net when crossing over weights.
+
+        Returns another Network instance.
+    """
+    def reproduce_with(self, mate, mix_conns=False):
         big = self if len(self.neurons) > len(mate.neurons) else mate
         small = mate if self is big else self
 
@@ -84,12 +97,25 @@ class Network:
 
         return Network(weights=new_weights,connections=new_connections, input_no=big.input_no,output_no=big.output_no)
 
+    """
+        Condenses all weights into one string.
+        __str__ of Neuron returns a 12*n digit number, every 12 digits representing
+        a weight. Weights for each neuron are divided by newline.
+    """
     def get_weight_str(self):
         neurons = [str(x) for x in self.neurons]
         s = "".join(neurons)
 
         return s
 
+    """
+        Outputs data in form of:
+        2.4.5.1
+        10.2
+        where line number represents the neuron, and the output data represents input neurons.
+        In this example, 0th neuron takes input from neurons 2,4,5,1 and 1st neuron
+        from 10th neuron and 2nd neuron.
+    """
     def get_conn_str(self):
         s = ""
         # connection information
@@ -98,7 +124,9 @@ class Network:
             s += ".".join(conn) + os.linesep #condense them into a single string
         return s
 
-    # alphanumeric chars are 48-122 in unicode table as decimal representation
+    """
+        Non-random name based on weights data. Unique for each net.
+    """
     def generate_name(self):
         max_char = 122
         min_char = 64

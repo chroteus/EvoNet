@@ -2,17 +2,20 @@ import random, evo_globals
 """
     Generate weights and connections data for Network.
 """
-def network(min_neuron_number=20):
-    neuron_number = min_neuron_number + random.randint(0, evo_globals.max_neurons)
+def network(min_n=20,max_n=evo_globals.max_neurons):
+    neuron_number = min_n + random.randint(0, max_n-min_n)
 
     connections = []
     weights = []
     for i in range(neuron_number):
         connections.append([])
-        max_conn = random.randint(1,round(neuron_number/2))
+        m = round(min(neuron_number/5, 10))
+        max_conn = random.randint(1,m)
 
         while len(connections[i]) < max_conn:
-            connections[i].append(random.randrange(0,round(neuron_number,0)))
+            rand_n = random.randrange(0,round(neuron_number,0))
+            if i != rand_n: #prevent self-referential neurons
+                connections[i].append(rand_n)
 
         weights.append([])
         while len(weights[i]) < max_conn:

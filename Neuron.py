@@ -2,7 +2,8 @@ from Synapse import Synapse
 from os import linesep
 from evo_globals import activator
 """
-    Neuron class
+    Neuron class, gets input from other neurons, outputs to one,
+    combining all input values using an activator function.
 """
 
 class Neuron:

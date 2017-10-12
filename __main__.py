@@ -15,14 +15,16 @@ def main():
         net.set_input([a,b])
         net_out = net.get_output()[0]
 
-        return 1/((net_out-real_out)**2)
+        diff = max(net_out-real_out, 1)
+        return 1/((diff)**2)
 
     evo.set_fitness_func(xor_fitness)
 
-    for i in range(10):
+    for i in range(100):
         evo.evolve_for(1)
         top_net = evo.nets[0]
-        top_net.save()
+        for c in top_net.connection_data:
+            print(c)
         top_net.set_input([1,0])
         out = top_net.get_output()[0]
         print("GEN " + str(i) + ": Expected 1, got " + str(out))

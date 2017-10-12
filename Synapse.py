@@ -1,5 +1,9 @@
 import random
 
+"""
+    Connect Neurons between each other and input value to parent neuron
+    from output neuron
+"""
 class Synapse:
     def __init__(self, neuron, weight):
         if weight is None:

@@ -1,8 +1,15 @@
 import os, json
 
+"""
+    Relative string to module.
+"""
 def rel_path(*args):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *args)
 
+"""
+    Decodes a string, encoded by Network.save
+    into weights and connections data for Network.
+"""
 def decode_net_str(data):
     weights_data,conns_data = data.split(",")
     weights_data = weights_data.rstrip(os.linesep)
