@@ -1,6 +1,7 @@
 net_dir = "nets"
+import os
+from . import helpers
 
-import helpers, os
 if not os.path.exists(helpers.rel_path(net_dir)):
     try:
         os.mkdir(helpers.rel_path(net_dir))

@@ -1,4 +1,4 @@
-from Neuron import Neuron
+from .neuron import Neuron
 """
     Network class.
     Arguments:
@@ -13,7 +13,8 @@ from Neuron import Neuron
 
     See docs for more info.
 """
-import os, random, itertools, helpers, evo_globals
+import os, random, itertools
+from . import helpers, evo_globals
 
 class Network:
     def __init__(self, weights, connections=None, input_no=1,output_no=1):

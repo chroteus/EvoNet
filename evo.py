@@ -1,5 +1,6 @@
-import random, generator
-from Network import Network
+import random
+from . import generator
+from .network import Network
 from operator import attrgetter # for network sorting
 """
     Main genetic algorithm module.
