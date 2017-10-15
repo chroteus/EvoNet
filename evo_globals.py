@@ -10,7 +10,7 @@ if not os.path.exists(helpers.rel_path(net_dir)):
 
 # max "hidden" neurons to add
 # at 0, only input+output neurons will be generated
-max_neurons = 800
+max_neurons = 400
 
 ##################
 ### Activators ###

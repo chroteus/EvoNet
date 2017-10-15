@@ -1,15 +1,13 @@
 # EvoNet
 EvoNet is an *experimental* project developed to train neural networks by evolving its topology and weights at the same time using a genetic algorithm.
-Unlike usual layer-based neural nets, EvoNet has arbitrary connections between neurons, sometimes neurons can even be self-connecting, which means the net has a very basic form of memory, and thus its output depends on the output of its previous runs.
+Unlike usual layer-based neural nets, EvoNet has arbitrary connections between neurons and is thus pretty universal.  
 
-*TODO: Add visualisation of an example network*
-
-# Example of net training
+# A very simple example of net training
 ```python
 import evonet
 
 # init the main class
-evo = evonet.Evo.Evo(input_no=2,output_no=1,
+evo = evonet.evo.Evo(input_no=2,output_no=1,
                      net_no=300, # nets per generation
                      chosen_no=100, # nets to be bred per generation
                      mix_conns=False)
@@ -22,7 +20,7 @@ def xor_fitness(evo,net):
     net_out = net.get_output()[0]
 
     # return the fitness value to Evo
-    return 1/((net_out-real_out)**2)
+    return 1/(abs(net_out-real_out)**2)
 
 evo.set_fitness_func(xor_fitness)
 
@@ -61,7 +59,7 @@ The movement of the paddle was also quite natural.
 
 * **Predicting Euro's rise/fall (still in testing)**
 
-As this is a much harder problem and the fact that market is unpredictable, I evolve 12000 nets per hour on the USD/EUR exchange data. So far, there have been 4 million nets created. Top nets (~20 nets) predict change of Euro correctly %70 of the time. However it has yet to be seen whether the predictions are consistent and whether nets can predict big changes.
+As this is a much harder problem and the fact that market is unpredictable, I evolve 12000 nets per hour on the USD/EUR exchange data. So far, there have been 4 million nets created. Top nets (~20 nets) predict change of Euro correctly %70 of the time. However it has yet to be seen whether the predictions are consistent over months and whether nets can predict big changes.
 
 ### Unsuccessful uses:
 * **Game of 2048**
