@@ -38,9 +38,8 @@ def decode_net_str(data):
 
 
 
-NETS_DIR = "nets"
 def open_net_file(net_file):
-    path = rel_path(NETS_DIR, net_file)
+    path = rel_path(net_file)
     assert os.path.isfile(path)
 
     with open(path) as f:
