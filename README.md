@@ -10,11 +10,8 @@ The connection's width represent the weight of that connection.
 
 The only way that input neurons differ from other neurons is that they additionally take input from user.
 
-![Net](https://user-images.githubusercontent.com/5436911/31633344-c0f7f146-b2c8-11e7-95b7-440b3c32173c.png)
+![Net](https://user-images.githubusercontent.com/5436911/31634628-de5421ca-b2cc-11e7-9f22-b98981106654.png)
 
-In this particular network, the first (and only) route from 0 is to 6, with a very insignificant weight. From 6, the data is sent to other neurons and especially to 0, getting augmented by big weight along the way.
-The first question you might ask is why do input neurons get input from other neurons.
-Honestly, I don't know. It just works™.
 
 # A very simple example of net training
 ```python
