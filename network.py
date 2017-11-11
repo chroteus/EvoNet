@@ -14,7 +14,7 @@ from .neuron import Neuron
     See docs for more info.
 """
 import os, random, itertools
-from . import helpers, evo_globals
+from . import helpers, evo_globals, generator
 
 class Network:
     def __init__(self, weights, connections=None, input_no=1,output_no=1):
@@ -26,7 +26,7 @@ class Network:
         self.weights_data = weights #for reproduction
         self.input_no = input_no
         self.output_no = output_no
-
+        self.fitness = -9999
         # add empty neurons
         for neuron in weights:
             self.neurons.append(Neuron())
@@ -65,7 +65,9 @@ class Network:
 
         Returns another Network instance.
     """
-    def reproduce_with(self, mate, mix_conns=False):
+    def reproduce_with(self, mate, mix_conns=False,class_to_use=None):
+        if not class_to_use:
+            class_to_use = Network
         big = self if len(self.neurons) > len(mate.neurons) else mate
         small = mate if self is big else self
 
@@ -80,7 +82,7 @@ class Network:
         for ni,neuron in enumerate(new_weights):
             for si,syn in enumerate(neuron):
                 if syn == "x":
-                    new_weights[ni][si] = (random.randint(0,3) + random.random())*random.choice([-1,1])
+                    new_weights[ni][si] = generator.new_weight()
 
         new_connections = []
         for bci,bconn in enumerate(big.connection_data):
@@ -96,7 +98,7 @@ class Network:
 
             new_connections.append(new_neural_in)
 
-        return Network(weights=new_weights,connections=new_connections, input_no=big.input_no,output_no=big.output_no)
+        return class_to_use(weights=new_weights,connections=new_connections, input_no=big.input_no,output_no=big.output_no)
 
     """
         Condenses all weights into one string.

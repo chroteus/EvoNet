@@ -8,10 +8,6 @@ if not os.path.exists(helpers.rel_path(net_dir)):
     except OSError:
         pass
 
-# max "hidden" neurons to add
-# at 0, only input+output neurons will be generated
-max_neurons = 400
-
 ##################
 ### Activators ###
 import math
@@ -27,3 +23,25 @@ activators["sigmoid"] = sigmoid
 
 def relu(val): return max(0,val)
 activators["relu"] = relu
+
+###################
+### Derivatives ###
+
+def derivative(val):
+    return derivatives[curr_activator](val)
+
+derivatives = {}
+def dtanh(x):
+    return 1 - (math.tanh(x)**2)
+derivatives["tanh"] = dtanh
+
+def dsigmoid(x):
+    return x * (1 - x)
+derivatives["sigmoid"] = dsigmoid
+
+def drelu(x):
+    if x >= 0:
+        return 1
+    else:
+        return 0
+derivatives["relu"] = drelu

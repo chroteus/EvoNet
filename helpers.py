@@ -48,3 +48,4 @@ def open_net_file(net_file):
         data = f.read().rstrip(os.linesep)
 
     return decode_net_str(data)
+
