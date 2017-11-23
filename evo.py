@@ -21,12 +21,10 @@ class Evo:
         self.net_no = net_no # nets per generation
 
         # nets chosen to breed
-        if not chosen_no: self.chosen_no = round(self.net_no / 3)
-        self.chosen_no = min(chosen_no,net_no)
-
+        self.chosen_no = chosen_no if chosen_no else round(self.net_no / 4)
         # nets passed unchanged
-        if elite_no == None: self.elite_no = round(self.chosen_no/10)
-        self.elite_no = min(elite_no, chosen_no)
+        self.elite_no = elite_no if elite_no else round(self.chosen_no/10)
+        self.elite_no = min(self.elite_no,self.chosen_no)
 
         self.net_class = custom_net_class
         if custom_net_class == None:
@@ -98,8 +96,7 @@ class Evo:
         new_nets = []
 
         for net in self.nets:
-            for neuron in net.neurons:
-                neuron.value = 0
+            net.reset_values()
 
         self.nets.sort(key=attrgetter("fitness"), reverse=True)
         if hasattr(self, "alpha_evo"): # alpha nets enabled?
@@ -172,7 +169,7 @@ class AlphaEvo(Evo):
         self.evo = evo
         super().__init__(input_no=evo.input_no,
                          output_no=evo.output_no,
-                         net_no=20,chosen_no=10,
+                         net_no=50,chosen_no=10,
                          elite_no=2, custom_net_class=evo.net_class,
                          mix_conns=False,
                          empty=True)

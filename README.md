@@ -14,49 +14,71 @@ The only way that input neurons differ from other neurons is that they additiona
 
 
 # A very simple example of net training
+Here, we try to predict the next step in sin wave.
+
 ```python
-import evonet
+import math, random
+import EvoNet as evonet
+from matplotlib import pyplot
 
-# init the main class
-evo = evonet.evo.Evo(input_no=2,output_no=1,
-                     net_no=300, # nets per generation
-                     chosen_no=100, # nets to be bred per generation
-                     mix_conns=False)
-# evolve a net to approximate XOR operator
-def xor_fitness(evo,net):
-    a = random.choice((0,1))
-    b = random.choice((0,1))
-    real_out = a ^ b #xor operator
-    net.set_input([a,b])
-    net_out = net.get_output()[0]
+def test_func(x):
+    x /= 10
+    return math.sin(x)
 
-    # return the fitness value to Evo
-    return 1/(abs(net_out-real_out)**2)
 
-evo.set_fitness_func(xor_fitness)
+evo = evonet.evo.Evo(input_no=10,
+                     output_no=1,
+                     net_no=400,
+                     max_neurons_per_net=50,
+                     elite_no=5,
+                     mix_conns=True)
 
-for i in range(10):
+def sin_fitness(evo,net):
+    fitness = 0
+    for i in range(10): # repeat tests
+        rand_start = random.randint(-99999,99999)
+        # feed 10 samples of sin
+        sin_wave = [test_func(x) for x in range(rand_start, rand_start+evo.input_no)]
+        real_value = test_func((rand_start+evo.input_no))
+
+        net.set_input(sin_wave)
+        prediction = net.get_output()[0]
+        net.reset_values()
+
+        # the lower the difference, the closer the value is to 1
+        fitness += math.exp(-abs(prediction-real_value))
+
+    return fitness/10
+
+evo.set_fitness_func(sin_fitness)
+
+# evolve for 20 gens and see results
+for i in range(20):
     evo.evolve_for(1)
-    top_net = evo.nets[0]
-    top_net.set_input([1,0])
-    out = top_net.get_output()[0]
-    print("GEN " + str(i) + ": Expected 1, got " + str(out))
+    best_net = evo.nets[0]
+    print(best_net.fitness)
+    # predict
+    real_values = []
+    predicted_values = []
+    for i in range(150):
+        real_values.append(test_func(i))
+
+        input_data = [test_func(x) for x in range(i-evo.input_no, i)]
+
+        best_net.set_input(input_data)
+        prediction = best_net.get_output()[0]
+        best_net.reset_values()
+        predicted_values.append(prediction)
+
+    pyplot.plot(real_values)
+    pyplot.plot(predicted_values)
+    pyplot.show()
+
 ```
 
-Here are some (truncated) outputs for 1^0 (per generation trained):
-```
-GEN 0: Expected 1, got 0.002
-GEN 1: Expected 1, got 0.001
-GEN 2: Expected 1, got 0.000
-GEN 3: Expected 1, got 0.002
-GEN 4: Expected 1, got 0.000
-GEN 5: Expected 1, got 0.999
-GEN 6: Expected 1, got 0.000
-GEN 7: Expected 1, got 0.000
-GEN 8: Expected 1, got 0.999
-GEN 9: Expected 1, got 0.999
-```
-As you can see from gen 6, algorithm discarded the nets that didn't work consistently, causing the result to drop to 0 again, but it quickly recovered.
+Here are outputs of network from Gen 1 and Gen 8, respectively:
+![gen 1](https://user-images.githubusercontent.com/5436911/33179904-ad758d9a-d073-11e7-833a-a9f0e0899813.png)
+![gen 8](https://user-images.githubusercontent.com/5436911/33179906-ada70afa-d073-11e7-9c7b-662cd51f41b2.png)
 
 # Precautions
 Genetic algorithms are a much, **MUCH** slower method of training neural nets compared to backpropagation, and due to the random nature of generation, you may reach an optimal net within just 10 generations or if you're unlucky, within 100 generations. It all depends on the task at hand.

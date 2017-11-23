@@ -1,4 +1,4 @@
-import random
+import random, math
 from . import evo_globals
 
 """
@@ -6,7 +6,7 @@ from . import evo_globals
 """
 
 def new_weight():
-    weight = random.randint(0,1)+random.random()
+    weight = random.random()
     weight *= random.choice((-1,1))
     return weight
 
@@ -17,8 +17,8 @@ def network(min_n=20,max_n=500):
     weights = []
     for i in range(neuron_number):
         connections.append([])
-        m = neuron_number #round(max(neuron_number/5, 40))
-        max_conn = random.randint(1,m)
+        m = neuron_number
+        max_conn = random.randint(math.ceil(m/10),m)
 
         while len(connections[i]) <= max_conn:
             rand_n = random.randrange(0,round(neuron_number,0))

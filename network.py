@@ -146,6 +146,10 @@ class Network:
 
         return name
 
+    def reset_values(self):
+        for n in self.neurons:
+            n.value = 0
+
     def save(self, path=None):
         path = path if path else helpers.rel_path(evo_globals.net_dir, self.generate_name())
         if os.path.exists(path): path += " - 1" # first copy
