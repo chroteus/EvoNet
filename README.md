@@ -1,4 +1,6 @@
 # EvoNet
+*Askar Mulin, 2017*
+
 EvoNet is an *experimental* project developed to train neural networks by evolving its topology and weights at the same time using a genetic algorithm.
 Unlike usual layer-based neural nets, EvoNet has arbitrary connections between neurons and is thus pretty universal.  
 
@@ -97,3 +99,4 @@ As this is a much harder problem and the fact that market is unpredictable, I ev
 ### Unsuccessful uses:
 * **Game of 2048**
 No matter the training, no net has ever broken the record of 256.
+A tree is certainly needs to be used and a bare net cannot simulate a "memory".
